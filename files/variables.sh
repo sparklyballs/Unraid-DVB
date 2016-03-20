@@ -10,7 +10,7 @@ CVH="1.11"
 DATE=$(date +'%d%m%y')
 
 ##Current Unraid Version
-VERSION="$(cat /etc/unraid-version | cut -d '"' -f2)"
+VERSION="$(cat /etc/unraid-version | tr "." - | cut -d '"' -f2)"
 
 ##Working directory
 D="$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"
