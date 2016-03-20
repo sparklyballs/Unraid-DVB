@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##Remove old folders
-rm -rf $D/bzroot-ddexp $D/bzroot-master-* $D/bzroot-openelec $D/bzroot-tbs  $D/kernel $D/lib $D/media_build_experimental $D/openelec-drivers $D/tbs-drivers $D/unraid $D/.config $D/linux-*.tar.xz  $D/unRAIDServer-*.zip $D/variables.sh
+rm -rf $D/bzroot-ddexp $D/bzroot-master-* $D/bzroot-openelec $D/bzroot-tbs $D/kernel $D/lib $D/media_build_experimental $D/openelec-drivers $D/tbs-drivers $D/unraid $D/.config $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/variables.sh $D/ddexp-*.zip $D/FILE_LIST 
 
 ##Pull slackware64-current FILE_LIST to get packages
 wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
@@ -37,15 +37,15 @@ cd $D
   make oldconfig
  
 ##Make menuconfig
-cd $D/kernel
-make menuconfig
+#cd $D/kernel
+#make menuconfig
  
 ##Use preconfigured .config rather than going through make menuconfig
-#cd $D
-#wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config
-#cd $D/kernel
-#rm -f .config
-#rsync $D/.config $D/kernel/.config
+cd $D
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config
+cd $D/kernel
+rm -f .config
+rsync $D/.config $D/kernel/.config
 
 ##Compile Kernel
 cd $D/kernel
@@ -57,8 +57,8 @@ make all modules_install install
 
 ##Download Unraid Comment/Uncomment for Beta/Stable
 cd $D
-wget -nc http://dnld.lime-technology.com/stable/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
-#wget -nc http://dnld.lime-technology.com/beta/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
+#wget -nc http://dnld.lime-technology.com/stable/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
+wget -nc http://dnld.lime-technology.com/beta/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
 unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 
 ##Extract bzroot
@@ -78,11 +78,13 @@ find /lib/firmware -type f -exec cp -r --parents '{}' $D/ \;
 mkdir -p $D/$VERSION/stock/
 cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
+cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
+md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D

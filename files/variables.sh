@@ -16,27 +16,35 @@ VERSION="$((grep -o '".*"' /etc/unraid-version | sed 's/"//g') | sed 's/\./\-/g'
 D="$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"
 
 ##Packages required 
+
 URLS="
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/a/cpio-2.11-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/a/cxxlibs-6.0.18-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/a/patch-2.7-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/ap/bc-1.06.95-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/ap/sqlite-3.7.17-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/autoconf-2.69-noarch-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/automake-1.11.5-noarch-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/binutils-2.23.52.0.1-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/gcc-4.8.2-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/gcc-g++-4.8.2-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/patches/packages/linux-3.10.17-2/kernel-headers-3.10.17-x86-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/libtool-2.4.2-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/m4-1.4.17-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/make-3.82-x86_64-4.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/mercurial-2.7.2-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/perl-5.18.1-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/d/pkg-config-0.25-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/patches/packages/glibc-2.17-x86_64-11_slack14.1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/l/libmpc-0.8.2-x86_64-2.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/l/mpfr-3.1.2-x86_64-1.txz
-http://mirrors.slackware.com/slackware/slackware64-14.1/slackware64/l/ncurses-5.9-x86_64-2.txz
-https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<cpio-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<patch-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<bc-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<sqlite-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<autoconf-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<automake-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<binutils-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<gcc-[[:digit:]].*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<gcc-g\+.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<kernel-headers-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<libtool-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<m4-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<make-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<mercurial-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<perl-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<pkg-config-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<glibc-[[:digit:]].*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<libmpc-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<mpfr-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<ncurses-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<libgudev-*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<glibc-solibs-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<libcgroup-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<guile-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<gc-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<libunistring-.*.txz$' FILE_LIST | cut -b 53-9001)"
+http://mirrors.slackware.com/slackware/slackware64-current/slackware64"$(egrep -e '\<flex-.*.txz$' FILE_LIST | cut -b 53-9001)"
+https://github.com/dmacias72/unRAID-plugins/raw/master/packages/6.2/python-2.7.11-x86_64-2.txz
 "
+
