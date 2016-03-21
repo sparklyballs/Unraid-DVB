@@ -34,4 +34,5 @@ do
 package_locations=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST | cut -b 53-9001)
 echo "$slack_package_urlbase""$package_locations" >> "$D"/URLS
 done
+sed -i '/.txz/ !d' "$D"/URLS
 echo "$python_url" >> "$D"/URLS
