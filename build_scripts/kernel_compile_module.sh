@@ -15,13 +15,8 @@ cd $D
 
 ##Install pkg modules
 [ ! -d "$D/packages" ] && mkdir $D/packages
-  OLD_IFS="$IFS";IFS=$'\n';
-  for url in $URLS; do
-    PKGPATH=${D}/packages/$(basename $url)
-    [ ! -e "${PKGPATH}" ] && wget --no-check-certificate $url -O "${PKGPATH}"
-    [[ "${PKGPATH}" == *.txz ]] && installpkg "${PKGPATH}"
-  done
-  IFS="$OLD_IFS";
+  wget -nc -P $D/packages -i $D/URLS
+  installpkg $D/packages/*.txz
   
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
